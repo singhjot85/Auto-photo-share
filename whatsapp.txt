@@ -1,0 +1,8 @@
+
+import pywhatkit as py
+            import time
+            
+            mobile_number = input("Enter your mobile number: ")
+            complete_number = complete_mobile_number(mobile_number)
+
+            py.sendwhats_image(complete_number, image_path)

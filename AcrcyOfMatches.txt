@@ -1,0 +1,10 @@
+if is_same:
+            distance = face_recognition.face_distance([image_1], image_2) # finding the distance level between images
+            print("The images are same")
+
+            # calcuating accuracy level between images
+            distance = round(distance[0] * 100)
+            accuracy = 100 - round(distance)
+            print(f"Accuracy Level: {accuracy}%")
+        else:
+            print("The images are not same")

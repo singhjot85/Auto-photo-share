@@ -1,0 +1,18 @@
+Date: 4/2/2024
+Time: 16:48
+Phone Number: +919813324926
+Image: D:\Datasets\CelebFaces\img_align_celeba\000000.png
+Caption: 
+--------------------
+Date: 4/2/2024
+Time: 16:54
+Phone Number: +919813324926
+Image: D:\Datasets\CelebFaces\img_align_celeba\000081.jpg
+Caption: 
+--------------------
+Date: 4/2/2024
+Time: 16:55
+Phone Number: +918360190634
+Image: D:\Datasets\CelebFaces\img_align_celeba\000000.png
+Caption: 
+--------------------

@@ -1,0 +1,91 @@
+import cv2
+import face_recognition
+import os
+import sys
+
+face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+video_capture = cv2.VideoCapture(0) # 0 corresponds to the default camera, you can change it if needed
+
+def detect_bounding_box(vid):
+    gray_image = cv2.cvtColor(vid, cv2.COLOR_BGR2GRAY)
+    faces = face_classifier.detectMultiScale(gray_image, 1.1, 5, minSize=(40, 40))
+    for (x, y, w, h) in faces:
+        cv2.rectangle(vid, (x, y), (x + w, y + h), (0, 255, 0), 4)
+    return faces
+
+def find_face_encodings(image_path):
+    image = cv2.imread(image_path) # reading image
+    face_enc = face_recognition.face_encodings(image) # get face encodings from the image
+    if face_enc:
+        return face_enc[0] # return face encodings
+    else:
+        return None
+
+def load_images_from_directory(directory_path):
+    image_files = [f for f in os.listdir(directory_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
+
+    images = []
+    for image_file in image_files:
+        image_path = os.path.join(directory_path, image_file)
+        img = cv2.imread(image_path)
+        if img is not None:
+            images.append((image_path, img))
+
+    return images
+
+while True:
+    result, video_frame = video_capture.read()  # read frames from the video
+    if result is False:
+        break  # terminate the loop if the frame is not read successfully
+
+    faces = detect_bounding_box(
+        video_frame
+    )  # apply the function we created to the video frame
+
+    cv2.imshow(
+        "My Face Detection Project", video_frame
+    )  # display the processed frame in a window named "My Face Detection Project"
+
+    key = cv2.waitKey(1) & 0xFF
+
+    if key == ord("q"):
+        break
+    elif key == 32:  # 32 corresponds to the spacebar key
+        cv2.imwrite("captured_image.jpg", video_frame)
+        print("Image captured!")
+video_capture.release()
+cv2.destroyAllWindows()
+
+image_1_encoding = find_face_encodings("captured_image.jpg") #getting face encodings for camera captured image
+if image_1_encoding is None: 
+    print("Face not detected!!!")
+    sys.exit()
+else: print("Face Detected.Proceeding...")
+
+
+directory_path = r"C:\Users\SinghJot\Downloads\CelebFaces\img_align_celeba"
+images = load_images_from_directory(directory_path)
+for image_path, image in images:
+    # Resizing image
+    height, width = image.shape[:2]
+    new_width = 240 
+    new_height = int((new_width / width) * height)
+    resized_image = cv2.resize(image, (new_width, new_height))
+
+    cv2.imshow("Image", resized_image)
+
+    key = cv2.waitKey(10) & 0xFF
+
+    if key == ord("q"):
+        break
+    else: 
+        image_2_enconding  = find_face_encodings(image_path) #image loaded from directory
+        if image_2_enconding is None:
+            print("Face not detected!!!")
+            continue
+        is_same = face_recognition.compare_faces([image_1_encoding], image_2_enconding)[0] # checking both images are same
+        print(f"Is Same: {is_same}")
+        continue 
+
+cv2.destroyAllWindows()
+
