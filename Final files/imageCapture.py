@@ -8,15 +8,19 @@ def detect_bounding_box(vid):
         cv2.rectangle(vid, (x, y), (x + w, y + h), (0, 255, 0), 4)
     return faces
 
-def video_capture_script():
+def video_capture_script(log_file_name):
+    import logFile
     x = int(input("Select a device: \n"+"1. PC webcam\n"+"2. Mobile as webcam\n"))
     if x==1:
+        logFile.write_to_log("Using PC Webcam.",log_file_name)
         video_capture = cv2.VideoCapture(0)
     elif x==2:
+        logFile.write_to_log("Using smartphone as Webcam.",log_file_name)
         video_capture = cv2.VideoCapture(1)
     else:
-        print("Invalid Input")
-        import sys
+        logFile.write_to_log("Invalid Input",log_file_name)
+        import sys,os
+        os.remove(log_file_name)
         sys.exit()
 
     frame_counter = 0
@@ -39,6 +43,7 @@ def video_capture_script():
         elif key == 32:  # 32 corresponds to the spacebar key
             cv2.imwrite("captured_image.jpg", video_frame)
             print("Image captured!")
+            logFile.write_to_log("Image captured",log_file_name)
             break
 
     video_capture.release()

@@ -7,14 +7,16 @@ def image_resizer(image):
 
     return resized_image
 
-def similar_images(captured_image_path, directory_path):
+def similar_images(captured_image_path, directory_path,log_file_name):
+    import logFile
     matched_images_path=[]
 
     from faceDetection import find_face_encodings
     captured_image_encodings = find_face_encodings(captured_image_path)
     if(captured_image_encodings is None):
-        import sys
-        print('Face not detected')
+        import sys,os
+        logFile.write_to_log("Face not detected in captured image", log_file_name)
+        os.remove(log_file_name)
         sys.exit()
     
     from loadImg import image_loader
@@ -25,17 +27,18 @@ def similar_images(captured_image_path, directory_path):
         resized_image = image_resizer(image) # Resizing image
         
         cv2.imshow("Image", resized_image)
-        '''key = cv2.waitKey(1) & 0xFF
+        key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
-            break'''
+            break
         directory_image_encodings  = find_face_encodings(image_path) #image loaded from directory
 
         if directory_image_encodings is None:
-            print("Face not detected!!!")
+            logFile.write_to_log(f"Face not detected on image: {image_path}",log_file_name)
             continue
 
         is_same = face_recognition.compare_faces([captured_image_encodings], directory_image_encodings)[0] # checking both images are same
         print(f"Is Same: {is_same}")
+        logFile.write_to_log(f"Is same: {image_path}",log_file_name)
         if(is_same):
             matched_images_path.append(image_path)
         continue
