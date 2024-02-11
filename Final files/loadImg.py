@@ -1,7 +1,7 @@
-import os
-import cv2
-
 def image_loader(directory_path):
+    import os
+    import cv2
+
     image_files = [f for f in os.listdir(directory_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
 
     images = []

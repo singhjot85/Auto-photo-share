@@ -1,10 +1,7 @@
 import cv2
 
-face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-video_capture = cv2.VideoCapture(0) #for device webcam
-#video_capture = cv2.VideoCapture(1) #for mobile as webcam
-
 def detect_bounding_box(vid):
+    face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
     gray_image = cv2.cvtColor(vid, cv2.COLOR_BGR2GRAY)
     faces = face_classifier.detectMultiScale(gray_image, 1.1, 5, minSize=(40, 40))
     for (x, y, w, h) in faces:
@@ -12,7 +9,15 @@ def detect_bounding_box(vid):
     return faces
 
 def video_capture_script():
-    video_capture = cv2.VideoCapture(0)
+    x = int(input("Select a device: \n"+"1. PC webcam\n"+"2. Mobile as webcam\n"))
+    if x==1:
+        video_capture = cv2.VideoCapture(0)
+    elif x==2:
+        video_capture = cv2.VideoCapture(1)
+    else:
+        print("Invalid Input")
+        import sys
+        sys.exit()
 
     frame_counter = 0
     frame_skip_interval = 3  # Adjust this value based on your requirements

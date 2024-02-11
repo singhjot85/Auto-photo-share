@@ -1,12 +1,5 @@
-import sys
-import os
-import cv2
-import face_recognition
-from imageCapture import video_capture_script as vcap
-from faceDetection import find_face_encodings
-from loadImg import image_loader
-
 def image_resizer(image):
+    import cv2
     height, width = image.shape[:2]
     new_width = 360 #Lower value gives speed
     new_height = int((new_width / width) * height)
@@ -14,18 +7,19 @@ def image_resizer(image):
 
     return resized_image
 
-captured_image_path = vcap()
-
-directory_path = r'' #directory to load images
-
 def similar_images(captured_image_path, directory_path):
     matched_images_path=[]
 
+    from faceDetection import find_face_encodings
     captured_image_encodings = find_face_encodings(captured_image_path)
-    if(captured_image_encodings == None):
+    if(captured_image_encodings is None):
+        import sys
         print('Face not detected')
         sys.exit()
     
+    from loadImg import image_loader
+    import cv2
+    import face_recognition
     images = image_loader(directory_path)
     for image_path, image in images:
         resized_image = image_resizer(image) # Resizing image
