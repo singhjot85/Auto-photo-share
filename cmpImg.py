@@ -38,9 +38,14 @@ def similar_images(captured_image_path, directory_path,log_file_name):
 
         is_same = face_recognition.compare_faces([captured_image_encodings], directory_image_encodings)[0] # checking both images are same
         print(f"Is Same: {is_same}")
-        logFile.write_to_log(f"Is same: {image_path}",log_file_name)
+        logFile.write_to_log(f"Is same:{is_same} -> {image_path}",log_file_name)
         if(is_same):
             matched_images_path.append(image_path)
+            # calcuating accuracy level between images
+            distance = round(distance[0] * 100)
+            accuracy = 100 - round(distance)
+            print(f"Accuracy Level: {accuracy}%")
+            logFile.write_to_log(f"Distance: {distance}, Accuracy: {accuracy}",log_file_name)
         continue
     cv2.destroyAllWindows()
     

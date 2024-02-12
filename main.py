@@ -35,7 +35,7 @@ else:
     os.remove(log_file_name)
     sys.exit()
 
-directory_path = r'C:\Users\SinghJot\OneDrive\Documents\GitHub\Projects\Auto-photo share\Final files\Database'
+directory_path = r'C:\Users\SinghJot\OneDrive\Documents\GitHub\Projects\Auto-photo share\Database'
 logFile.write_to_log(f"path: {directory_path}",log_file_name)
 similar_image_path = similar_images(captured_image,directory_path,log_file_name)
 
